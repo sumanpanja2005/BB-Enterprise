@@ -1,0 +1,135 @@
+.admin-page h1 {
+  margin-bottom: 0.35rem;
+}
+
+.admin-lead {
+  color: var(--color-muted);
+  margin-bottom: 2rem;
+}
+
+.admin-page-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.admin-stat {
+  padding: 1.25rem;
+}
+
+.admin-stat-label {
+  display: block;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  margin-bottom: 0.35rem;
+}
+
+.admin-stat-value {
+  font-size: 1.75rem;
+  font-family: var(--font-display);
+}
+
+.admin-h2 {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.admin-table-wrap {
+  overflow-x: auto;
+  padding: 0;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.admin-table th,
+.admin-table td {
+  text-align: left;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-table th {
+  font-weight: 600;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.admin-table a {
+  color: var(--color-accent);
+}
+
+.admin-actions {
+  white-space: nowrap;
+}
+
+.admin-form {
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.admin-form h2 {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.admin-form-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1rem;
+}
+
+.admin-form-actions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.admin-check {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0;
+  cursor: pointer;
+}
+
+.admin-inline-form {
+  display: grid;
+  grid-template-columns: 1fr 2fr auto;
+  gap: 1rem;
+  align-items: end;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+}
+
+.admin-select {
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  max-width: 180px;
+}
+
+@media (max-width: 768px) {
+  .admin-inline-form {
+    grid-template-columns: 1fr;
+  }
+}
