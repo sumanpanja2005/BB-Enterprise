@@ -24,6 +24,17 @@ const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
 
+const corsOrigins = [
+  process.env.CLIENT_URL,
+  process.env.CLIENT_URL_2,
+  process.env.CLIENT_URL_3,
+  process.env.FRONTEND_URL,
+  ...(process.env.CORS_ORIGINS || '')
+    .split(',')
+    .map((v) => v.trim())
+    .filter(Boolean),
+].filter(Boolean);
+
 // Stripe webhook must use raw body (before express.json)
 app.post(
   '/api/payments/webhook',
@@ -34,7 +45,12 @@ app.post(
 app.use(helmet());
 app.use(
   cors({
-    origin: process.env.CLIENT_URL || 'http://localhost:5173',
+    origin(origin, callback) {
+      // Allow non-browser clients (curl, health checks) with no Origin header.
+      if (!origin) return callback(null, true);
+      if (corsOrigins.includes(origin)) return callback(null, true);
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   })
 );
