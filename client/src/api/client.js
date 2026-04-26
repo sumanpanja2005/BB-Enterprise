@@ -1,6 +1,9 @@
 import axios from 'axios';
 
-const baseURL = import.meta.env.VITE_API_URL || '';
+const configuredApiUrl = import.meta.env.VITE_API_URL || '';
+const fallbackProdApiUrl = 'https://bb-enterprise.onrender.com';
+const baseURL =
+  configuredApiUrl || (import.meta.env.PROD ? fallbackProdApiUrl : '');
 
 const api = axios.create({
   baseURL: baseURL || undefined,
