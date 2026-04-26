@@ -9,6 +9,10 @@ const { buildOrderItems } = require('./orderController');
 const sendEmail = require('../utils/sendEmail');
 const User = require('../models/User');
 
+function getFrontendUrl() {
+  return process.env.FRONTEND_URL || 'http://localhost:5173';
+}
+
 /**
  * Decrement inventory for paid order
  */
@@ -55,7 +59,7 @@ async function createCheckoutSession(req, res, next) {
       status: 'pending_payment',
     });
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
+    const frontendUrl = getFrontendUrl();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
@@ -71,8 +75,8 @@ async function createCheckoutSession(req, res, next) {
         },
         quantity: item.qty,
       })),
-      success_url: `${clientUrl}/order-confirmation/${order._id}?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${clientUrl}/checkout?cancelled=1`,
+      success_url: `${frontendUrl}/order-confirmation/${order._id}?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${frontendUrl}/checkout?cancelled=1`,
       customer_email: req.user.email,
       metadata: {
         orderId: order._id.toString(),

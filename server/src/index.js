@@ -23,17 +23,6 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
 
 const app = express();
-
-const corsOrigins = [
-  process.env.CLIENT_URL,
-  process.env.CLIENT_URL_2,
-  process.env.CLIENT_URL_3,
-  process.env.FRONTEND_URL,
-  ...(process.env.CORS_ORIGINS || '')
-    .split(',')
-    .map((v) => v.trim())
-    .filter(Boolean),
-].filter(Boolean);
 const allowRenderSubdomains = true;
 
 // Stripe webhook must use raw body (before express.json)
@@ -49,7 +38,8 @@ app.use(
     origin(origin, callback) {
       // Allow non-browser clients (curl, health checks) with no Origin header.
       if (!origin) return callback(null, true);
-      if (corsOrigins.includes(origin)) return callback(null, true);
+      if (origin === 'http://localhost:5173') return callback(null, true);
+      if (origin === 'http://localhost:3000') return callback(null, true);
       if (
         allowRenderSubdomains &&
         /^https:\/\/[a-z0-9-]+\.onrender\.com$/i.test(origin)

@@ -4,6 +4,10 @@ const User = require('../models/User');
 const generateToken = require('../utils/generateToken');
 const sendEmail = require('../utils/sendEmail');
 
+function getFrontendUrl() {
+  return process.env.FRONTEND_URL || 'http://localhost:5173';
+}
+
 const registerValidation = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('email').isEmail().normalizeEmail().withMessage('Valid email required'),
@@ -95,8 +99,8 @@ async function forgotPassword(req, res, next) {
     user.resetPasswordExpire = Date.now() + 60 * 60 * 1000; // 1 hour
     await user.save({ validateBeforeSave: false });
 
-    const clientUrl = process.env.CLIENT_URL || 'http://localhost:5173';
-    const resetUrl = `${clientUrl}/reset-password/${resetToken}`;
+    const frontendUrl = getFrontendUrl();
+    const resetUrl = `${frontendUrl}/reset-password/${resetToken}`;
 
     await sendEmail({
       to: user.email,
