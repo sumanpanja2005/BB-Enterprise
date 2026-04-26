@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
+import { formatINR } from '../utils/currency';
 import './ProductCard.css';
 
 export default function ProductCard({ product, onWishlistToggle }) {
@@ -47,10 +48,10 @@ export default function ProductCard({ product, onWishlistToggle }) {
           </p>
           <h3 className="product-card-title">{product.name}</h3>
           <div className="product-card-meta">
-            <span className="product-card-price">${product.price.toFixed(2)}</span>
+            <span className="product-card-price">{formatINR(product.price)}</span>
             {product.compareAtPrice && product.compareAtPrice > product.price && (
               <span className="product-card-compare">
-                ${product.compareAtPrice.toFixed(2)}
+                {formatINR(product.compareAtPrice)}
               </span>
             )}
             {product.rating > 0 && (
@@ -68,8 +69,8 @@ export default function ProductCard({ product, onWishlistToggle }) {
         </div>
       </Link>
       <div className="product-card-actions">
-        <Link to={`/product/${product.slug}`} className="btn btn-primary product-card-add">
-          View details
+        <Link to={`/product/${product.slug}`} className="btn btn-primary product-card-view">
+          View Product
         </Link>
         <button
           type="button"

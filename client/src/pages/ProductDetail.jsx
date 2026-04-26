@@ -2,17 +2,15 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/client';
 import SEO from '../components/SEO';
-import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { formatINR } from '../utils/currency';
 import './ProductDetail.css';
 
 export default function ProductDetail() {
   const { slug } = useParams();
-  const { addItem } = useCart();
   const { user, refreshUser } = useAuth();
   const [product, setProduct] = useState(null);
   const [reviews, setReviews] = useState([]);
-  const [qty, setQty] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [reviewForm, setReviewForm] = useState({ rating: 5, comment: '' });
@@ -126,10 +124,10 @@ export default function ProductDetail() {
             </p>
             <h1>{product.name}</h1>
             <div className="product-detail-price-row">
-              <span className="product-detail-price">${product.price.toFixed(2)}</span>
+              <span className="product-detail-price">{formatINR(product.price)}</span>
               {product.compareAtPrice && product.compareAtPrice > product.price && (
                 <span className="product-detail-compare">
-                  ${product.compareAtPrice.toFixed(2)}
+                  {formatINR(product.compareAtPrice)}
                 </span>
               )}
             </div>
@@ -154,33 +152,6 @@ export default function ProductDetail() {
               )}
             </p>
             <div className="product-detail-buy">
-              <div className="qty-control">
-                <button
-                  type="button"
-                  aria-label="Decrease quantity"
-                  onClick={() => setQty((q) => Math.max(1, q - 1))}
-                >
-                  −
-                </button>
-                <span>{qty}</span>
-                <button
-                  type="button"
-                  aria-label="Increase quantity"
-                  onClick={() =>
-                    setQty((q) => Math.min(product.stock || 1, q + 1))
-                  }
-                >
-                  +
-                </button>
-              </div>
-              <button
-                type="button"
-                className="btn btn-primary"
-                disabled={product.stock <= 0}
-                onClick={() => addItem(product, qty)}
-              >
-                Add to bag
-              </button>
               <button
                 type="button"
                 className={`btn btn-outline ${inWishlist ? 'active' : ''}`}

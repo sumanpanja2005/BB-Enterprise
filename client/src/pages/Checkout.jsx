@@ -4,6 +4,7 @@ import SEO from '../components/SEO';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import api from '../api/client';
+import { formatINR } from '../utils/currency';
 import './Checkout.css';
 
 const emptyAddr = {
@@ -182,26 +183,26 @@ export default function Checkout() {
                     <span>
                       {i.name} × {i.qty}
                     </span>
-                    <span>${(i.price * i.qty).toFixed(2)}</span>
+                    <span>{formatINR(i.price * i.qty)}</span>
                   </li>
                 ))}
               </ul>
             )}
             <div className="cart-row">
               <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
+              <span>{formatINR(subtotal)}</span>
             </div>
             <div className="cart-row">
               <span>Shipping</span>
-              <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+              <span>{shipping === 0 ? 'Free' : formatINR(shipping)}</span>
             </div>
             <div className="cart-row">
               <span>Tax</span>
-              <span>${tax.toFixed(2)}</span>
+              <span>{formatINR(tax)}</span>
             </div>
             <div className="cart-row cart-total">
               <span>Total</span>
-              <span>${total.toFixed(2)}</span>
+              <span>{formatINR(total)}</span>
             </div>
             <Link to="/cart" className="btn btn-outline checkout-back">
               Back to bag

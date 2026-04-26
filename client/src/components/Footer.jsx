@@ -1,12 +1,12 @@
-import { Link } from 'react-router-dom';
-import './Footer.css';
+import { Link } from "react-router-dom";
+import "./Footer.css";
 
 export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="container footer-grid">
         <div>
-          <div className="footer-brand">BB Cosmetics Studio</div>
+          <div className="footer-brand">BB Enterprise</div>
           <p className="footer-tagline">
             A colorful product-and-reviews space for beauty lovers.
           </p>

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import api from '../api/client';
-import ProductCard from '../components/ProductCard';
-import SEO from '../components/SEO';
-import './Home.css';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import api from "../api/client";
+import ProductCard from "../components/ProductCard";
+import SEO from "../components/SEO";
+import "./Home.css";
 
 export default function Home() {
   const [featured, setFeatured] = useState([]);
@@ -15,8 +15,8 @@ export default function Home() {
     (async () => {
       try {
         const [featRes, catRes] = await Promise.all([
-          api.get('/api/products/featured'),
-          api.get('/api/categories'),
+          api.get("/api/products/featured"),
+          api.get("/api/categories"),
         ]);
         if (!cancelled) {
           setFeatured(featRes.data);
@@ -37,7 +37,7 @@ export default function Home() {
     <>
       <SEO
         title="Home"
-        description="BB Cosmetics Studio — discover products, check stock, and read trusted beauty reviews."
+        description="BB Enterprise — discover products, check stock, and read trusted beauty reviews."
         path="/"
       />
       <section className="hero">
@@ -46,8 +46,9 @@ export default function Home() {
             <p className="hero-eyebrow">Colorful beauty showcase</p>
             <h1 className="hero-title">Find your next favorite cosmetic</h1>
             <p className="hero-desc">
-              Explore our cosmetics collection with real customer reviews, product details,
-              and up-to-date stock to help you choose confidently.
+              Explore our cosmetics collection with real customer reviews,
+              product details, and up-to-date stock to help you choose
+              confidently.
             </p>
             <div className="hero-cta">
               <Link to="/shop" className="btn btn-primary">
@@ -112,7 +113,8 @@ export default function Home() {
             <h2 className="section-title">Our cosmetic shop locations</h2>
           </div>
           <p className="locations-sub">
-            Visit us in-store for shade matching, skin care advice, and product testing.
+            Visit us in-store for shade matching, skin care advice, and product
+            testing.
           </p>
           <div className="locations-grid">
             <article className="location-card card">
@@ -139,7 +141,8 @@ export default function Home() {
           <div>
             <h2 className="offer-title">Fresh arrivals every week</h2>
             <p className="offer-text">
-              Follow our latest drops, review highlights, and in-stock favorites.
+              Follow our latest drops, review highlights, and in-stock
+              favorites.
             </p>
           </div>
           <Link to="/shop?sort=rating&order=desc" className="btn btn-primary">

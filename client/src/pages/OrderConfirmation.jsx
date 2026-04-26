@@ -3,6 +3,7 @@ import { Link, useParams, useSearchParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import api from '../api/client';
 import { useCart } from '../context/CartContext';
+import { formatINR } from '../utils/currency';
 import './OrderConfirmation.css';
 
 export default function OrderConfirmation() {
@@ -49,7 +50,7 @@ export default function OrderConfirmation() {
               )}
               {order && (
                 <p className="confirm-total">
-                  Order total: <strong>${order.totalPrice?.toFixed(2)}</strong>
+                  Order total: <strong>{formatINR(order.totalPrice)}</strong>
                 </p>
               )}
               <div className="confirm-actions">

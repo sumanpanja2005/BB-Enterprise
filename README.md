@@ -1,4 +1,4 @@
-# BB Cosmetics Studio — Product Showcase & Reviews
+# BB Enterprise — Product Showcase & Reviews
 
 Cosmetic website built with **React (Vite)**, **Node.js / Express**, and **MongoDB**. It is focused on showcasing products with stock visibility and reviews, plus a colorful responsive interface and cosmetic shop location highlights.
 
@@ -12,7 +12,18 @@ Cosmetic website built with **React (Vite)**, **Node.js / Express**, and **Mongo
 
 ### 1. MongoDB
 
-Ensure MongoDB is reachable at `mongodb://127.0.0.1:27017` or set `MONGODB_URI` in `server/.env`.
+For MongoDB Atlas:
+
+1. Create a cluster in Atlas and create a database user.
+2. In Atlas, go to **Network Access** and allow your current IP (or `0.0.0.0/0` for testing only).
+3. Copy your connection string from **Connect > Drivers**.
+4. Set `MONGODB_URI` in `server/.env` like this:
+
+```env
+MONGODB_URI=mongodb+srv://<db_username>:<db_password>@<cluster-name>.mongodb.net/bb_enterprise?retryWrites=true&w=majority&appName=<app-name>
+```
+
+If your password contains special characters, URL-encode it.
 
 ### 2. Backend
 
@@ -22,6 +33,12 @@ copy .env.example .env
 ```
 
 Edit `server/.env`: set `MONGODB_URI`, `JWT_SECRET`, and optionally Stripe, Cloudinary, and email variables.
+
+You can generate a strong JWT secret with:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
+```
 
 ```bash
 npm install

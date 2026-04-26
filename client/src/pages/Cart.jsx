@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import { useCart } from '../context/CartContext';
+import { formatINR } from '../utils/currency';
 import './Cart.css';
 
 export default function Cart() {
@@ -38,7 +39,7 @@ export default function Cart() {
                       <Link to={`/product/${line.slug}`} className="cart-line-title">
                         {line.name}
                       </Link>
-                      <p className="cart-line-price">${line.price.toFixed(2)} each</p>
+                      <p className="cart-line-price">{formatINR(line.price)} each</p>
                       <div className="cart-line-actions">
                         <div className="qty-control">
                           <button
@@ -64,9 +65,7 @@ export default function Cart() {
                         </button>
                       </div>
                     </div>
-                    <div className="cart-line-total">
-                      ${(line.price * line.qty).toFixed(2)}
-                    </div>
+                    <div className="cart-line-total">{formatINR(line.price * line.qty)}</div>
                   </div>
                 ))}
               </div>
@@ -74,19 +73,19 @@ export default function Cart() {
                 <h2>Order summary</h2>
                 <div className="cart-row">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatINR(subtotal)}</span>
                 </div>
                 <div className="cart-row">
                   <span>Shipping</span>
-                  <span>{shipping === 0 ? 'Free' : `$${shipping.toFixed(2)}`}</span>
+                  <span>{shipping === 0 ? 'Free' : formatINR(shipping)}</span>
                 </div>
                 <div className="cart-row">
                   <span>Est. tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{formatINR(tax)}</span>
                 </div>
                 <div className="cart-row cart-total">
                   <span>Total</span>
-                  <span>${total.toFixed(2)}</span>
+                  <span>{formatINR(total)}</span>
                 </div>
                 <Link to="/checkout" className="btn btn-primary cart-checkout">
                   Checkout

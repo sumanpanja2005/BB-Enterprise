@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../../components/SEO';
 import api from '../../api/client';
+import { formatINR } from '../../utils/currency';
 import './AdminPages.css';
 
 export default function AdminDashboard() {
@@ -47,7 +48,7 @@ export default function AdminDashboard() {
           </div>
           <div className="card admin-stat">
             <span className="admin-stat-label">Revenue</span>
-            <strong className="admin-stat-value">${(c.revenue ?? 0).toFixed(2)}</strong>
+            <strong className="admin-stat-value">{formatINR(c.revenue ?? 0)}</strong>
           </div>
         </div>
         <h2 className="admin-h2">Recent orders</h2>
@@ -68,7 +69,7 @@ export default function AdminDashboard() {
                     <Link to={`/admin/orders`}>#{o._id.slice(-8)}</Link>
                   </td>
                   <td>{o.user?.email || '—'}</td>
-                  <td>${o.totalPrice?.toFixed(2)}</td>
+                  <td>{formatINR(o.totalPrice)}</td>
                   <td>{o.status}</td>
                 </tr>
               ))}

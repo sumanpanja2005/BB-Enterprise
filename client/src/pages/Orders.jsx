@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import SEO from '../components/SEO';
 import api from '../api/client';
+import { formatINR } from '../utils/currency';
 import './Orders.css';
 
 const statusLabels = {
@@ -54,7 +55,7 @@ export default function Orders() {
                     </p>
                   </div>
                   <div className="orders-right">
-                    <span className="orders-total">${o.totalPrice?.toFixed(2)}</span>
+                    <span className="orders-total">{formatINR(o.totalPrice)}</span>
                     <Link to={`/orders/${o._id}`} className="btn btn-outline">
                       Details
                     </Link>

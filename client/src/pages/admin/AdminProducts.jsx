@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import SEO from '../../components/SEO';
 import api from '../../api/client';
+import { formatINR } from '../../utils/currency';
 import './AdminPages.css';
 
 const emptyForm = {
@@ -15,6 +16,7 @@ const emptyForm = {
   featured: false,
   isActive: true,
   images: '',
+  categoryInput: '',
 };
 
 export default function AdminProducts() {
@@ -58,6 +60,7 @@ export default function AdminProducts() {
       price: String(p.price),
       compareAtPrice: p.compareAtPrice != null ? String(p.compareAtPrice) : '',
       category: p.category?._id || p.category,
+      categoryInput: p.category?.name || '',
       stock: String(p.stock),
       sku: p.sku || '',
       featured: !!p.featured,
@@ -72,13 +75,34 @@ export default function AdminProducts() {
     setSaving(true);
     setError('');
     try {
+      const categoryRaw = form.categoryInput.trim();
+      let categoryId = form.category;
+
+      if (!categoryRaw) {
+        throw new Error('Category is required');
+      }
+
+      const exactCategory = categories.find(
+        (c) =>
+          c._id === categoryRaw ||
+          c.name.toLowerCase() === categoryRaw.toLowerCase() ||
+          c.slug.toLowerCase() === categoryRaw.toLowerCase()
+      );
+
+      if (exactCategory) {
+        categoryId = exactCategory._id;
+      } else {
+        const { data: createdCategory } = await api.post('/api/categories', { name: categoryRaw });
+        categoryId = createdCategory._id;
+      }
+
       const payload = {
         name: form.name,
         description: form.description,
         shortDescription: form.shortDescription,
         price: Number(form.price),
         compareAtPrice: form.compareAtPrice ? Number(form.compareAtPrice) : undefined,
-        category: form.category,
+        category: categoryId,
         stock: Number(form.stock),
         sku: form.sku,
         featured: form.featured,
@@ -94,9 +118,10 @@ export default function AdminProducts() {
         await api.put(`/api/products/${editing}`, payload);
       }
       setEditing(null);
+      setForm(emptyForm);
       load();
     } catch (err) {
-      setError(err.response?.data?.message || 'Save failed');
+      setError(err.response?.data?.message || err.message || 'Save failed');
     } finally {
       setSaving(false);
     }
@@ -110,26 +135,6 @@ export default function AdminProducts() {
     } catch (err) {
       setError(err.response?.data?.message || 'Delete failed');
     }
-  };
-
-  const uploadFile = async (e) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    setError('');
-    try {
-      const body = new FormData();
-      body.append('image', file);
-      const { data } = await api.post('/api/upload/image', body, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      setForm((f) => ({
-        ...f,
-        images: f.images ? `${f.images}, ${data.url}` : data.url,
-      }));
-    } catch (err) {
-      setError(err.response?.data?.message || 'Upload failed — configure Cloudinary');
-    }
-    e.target.value = '';
   };
 
   if (loading) {
@@ -209,18 +214,20 @@ export default function AdminProducts() {
             <div className="admin-form-row">
               <div className="form-group">
                 <label>Category</label>
-                <select
+                <input
                   required
-                  value={form.category}
-                  onChange={(e) => setForm((f) => ({ ...f, category: e.target.value }))}
-                >
-                  <option value="">Select</option>
+                  list="category-options"
+                  value={form.categoryInput}
+                  onChange={(e) =>
+                    setForm((f) => ({ ...f, categoryInput: e.target.value, category: '' }))
+                  }
+                  placeholder="Choose or type category name"
+                />
+                <datalist id="category-options">
                   {categories.map((c) => (
-                    <option key={c._id} value={c._id}>
-                      {c.name}
-                    </option>
+                    <option key={c._id} value={c.name} />
                   ))}
-                </select>
+                </datalist>
               </div>
               <div className="form-group">
                 <label>Stock</label>
@@ -241,13 +248,12 @@ export default function AdminProducts() {
               </div>
             </div>
             <div className="form-group">
-              <label>Image URLs (comma-separated) or upload</label>
+              <label>Image URLs (comma-separated links)</label>
               <input
                 value={form.images}
                 onChange={(e) => setForm((f) => ({ ...f, images: e.target.value }))}
                 placeholder="https://..."
               />
-              <input type="file" accept="image/*" onChange={uploadFile} />
             </div>
             <label className="admin-check">
               <input
@@ -295,7 +301,7 @@ export default function AdminProducts() {
               {products.map((p) => (
                 <tr key={p._id}>
                   <td>{p.name}</td>
-                  <td>${p.price?.toFixed(2)}</td>
+                  <td>{formatINR(p.price)}</td>
                   <td>{p.stock}</td>
                   <td>{p.isActive ? 'Active' : 'Hidden'}</td>
                   <td className="admin-actions">

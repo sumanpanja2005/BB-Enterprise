@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import SEO from '../components/SEO';
 import api from '../api/client';
+import { formatINR } from '../utils/currency';
 import './OrderDetail.css';
 
 const statusLabels = {
@@ -66,26 +67,26 @@ export default function OrderDetail() {
                 {order.orderItems.map((item, idx) => (
                   <li key={idx}>
                     <span>{item.name} × {item.qty}</span>
-                    <span>${(item.price * item.qty).toFixed(2)}</span>
+                    <span>{formatINR(item.price * item.qty)}</span>
                   </li>
                 ))}
               </ul>
               <div className="order-totals">
                 <div>
                   <span>Subtotal</span>
-                  <span>${order.itemsPrice?.toFixed(2)}</span>
+                  <span>{formatINR(order.itemsPrice)}</span>
                 </div>
                 <div>
                   <span>Tax</span>
-                  <span>${order.taxPrice?.toFixed(2)}</span>
+                  <span>{formatINR(order.taxPrice)}</span>
                 </div>
                 <div>
                   <span>Shipping</span>
-                  <span>${order.shippingPrice?.toFixed(2)}</span>
+                  <span>{formatINR(order.shippingPrice)}</span>
                 </div>
                 <div className="order-grand">
                   <span>Total</span>
-                  <span>${order.totalPrice?.toFixed(2)}</span>
+                  <span>{formatINR(order.totalPrice)}</span>
                 </div>
               </div>
             </div>

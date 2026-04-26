@@ -113,14 +113,13 @@
   display: flex;
   gap: 0.5rem;
   padding: 0 1rem 1rem;
+  align-items: center;
 }
 
-.product-card-add {
+.product-card-view {
   flex: 1;
-  border-radius: var(--radius);
-  font-size: 0.9rem;
-  text-decoration: none;
   text-align: center;
+  text-decoration: none;
 }
 
 .product-card-heart {
