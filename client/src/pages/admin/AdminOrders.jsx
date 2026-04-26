@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import SEO from '../../components/SEO';
 import api from '../../api/client';
 import { formatINR } from '../../utils/currency';
@@ -58,7 +57,7 @@ export default function AdminOrders() {
               {orders.map((o) => (
                 <tr key={o._id}>
                   <td>
-                    <Link to={`/orders/${o._id}`}>#{o._id.slice(-8)}</Link>
+                    <span>#{o._id.slice(-8)}</span>
                   </td>
                   <td>{o.user?.email || o.user?.name}</td>
                   <td>{formatINR(o.totalPrice)}</td>

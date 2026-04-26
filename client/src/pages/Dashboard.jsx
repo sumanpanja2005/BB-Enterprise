@@ -74,7 +74,6 @@ export default function Dashboard() {
               <Link to="/dashboard" className="active">
                 Profile
               </Link>
-              <Link to="/orders">Orders</Link>
               <Link to="/wishlist">Wishlist</Link>
             </nav>
           </aside>

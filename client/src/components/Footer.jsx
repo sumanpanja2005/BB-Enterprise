@@ -29,13 +29,13 @@ export default function Footer() {
           <h4 className="footer-heading">Visit Us</h4>
           <ul className="footer-list">
             <li>
-              <Link to="/#">City Center Store</Link>
+              <span>City Center Store</span>
             </li>
             <li>
-              <Link to="/#">Sunlight Mall Store</Link>
+              <span>Sunlight Mall Store</span>
             </li>
             <li>
-              <Link to="/#">Blossom Street Store</Link>
+              <span>Blossom Street Store</span>
             </li>
           </ul>
         </div>
