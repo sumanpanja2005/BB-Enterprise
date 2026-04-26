@@ -10,6 +10,8 @@ export default function Shop() {
   const [data, setData] = useState({ products: [], pages: 1, total: 0 });
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const safeCategories = Array.isArray(categories) ? categories : [];
+  const safeProducts = Array.isArray(data?.products) ? data.products : [];
 
   const page = Number(searchParams.get('page')) || 1;
   const keyword = searchParams.get('q') || '';
@@ -19,7 +21,10 @@ export default function Shop() {
   const featured = searchParams.get('featured') === 'true';
 
   useEffect(() => {
-    api.get('/api/categories').then((r) => setCategories(r.data)).catch(console.error);
+    api
+      .get('/api/categories')
+      .then((r) => setCategories(Array.isArray(r.data) ? r.data : []))
+      .catch(console.error);
   }, []);
 
   useEffect(() => {
@@ -37,7 +42,14 @@ export default function Shop() {
         if (featured) params.set('featured', 'true');
 
         const prodRes = await api.get(`/api/products?${params.toString()}`);
-        if (!cancelled) setData(prodRes.data);
+        if (!cancelled) {
+          const payload = prodRes.data || {};
+          setData({
+            products: Array.isArray(payload.products) ? payload.products : [],
+            pages: Number(payload.pages) || 1,
+            total: Number(payload.total) || 0,
+          });
+        }
       } catch (e) {
         console.error(e);
       } finally {
@@ -90,7 +102,7 @@ export default function Shop() {
                 onChange={(e) => updateParam('category', e.target.value)}
               >
                 <option value="">All categories</option>
-                {categories.map((c) => (
+                {safeCategories.map((c) => (
                   <option key={c._id} value={c._id}>
                     {c.name}
                   </option>
@@ -135,12 +147,12 @@ export default function Shop() {
             <div className="loader-wrap">
               <div className="loader" />
             </div>
-          ) : data.products.length === 0 ? (
+          ) : safeProducts.length === 0 ? (
             <div className="empty-state">No products match your filters.</div>
           ) : (
             <>
               <div className="grid-products">
-                {data.products.map((p) => (
+                {safeProducts.map((p) => (
                   <ProductCard key={p._id} product={p} />
                 ))}
               </div>

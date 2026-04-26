@@ -10,11 +10,12 @@ export default function Wishlist() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
+  const safeItems = Array.isArray(items) ? items : [];
 
   const reload = () => {
     api
       .get('/api/users/wishlist')
-      .then((r) => setItems(r.data))
+      .then((r) => setItems(Array.isArray(r.data) ? r.data : []))
       .catch(console.error)
       .finally(() => setLoading(false));
   };
@@ -44,7 +45,7 @@ export default function Wishlist() {
             <div className="loader-wrap">
               <div className="loader" />
             </div>
-          ) : items.length === 0 ? (
+          ) : safeItems.length === 0 ? (
             <div className="empty-state card">
               <p>Your wishlist is empty.</p>
               <Link to="/shop" className="btn btn-primary">
@@ -53,7 +54,7 @@ export default function Wishlist() {
             </div>
           ) : (
             <div className="grid-products">
-              {items.map((p) => (
+              {safeItems.map((p) => (
                 <ProductCard key={p._id} product={p} onWishlistToggle={reload} />
               ))}
             </div>

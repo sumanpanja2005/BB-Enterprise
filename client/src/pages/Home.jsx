@@ -9,6 +9,8 @@ export default function Home() {
   const [featured, setFeatured] = useState([]);
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
+  const safeFeatured = Array.isArray(featured) ? featured : [];
+  const safeCategories = Array.isArray(categories) ? categories : [];
 
   useEffect(() => {
     let cancelled = false;
@@ -19,8 +21,8 @@ export default function Home() {
           api.get("/api/categories"),
         ]);
         if (!cancelled) {
-          setFeatured(featRes.data);
-          setCategories(catRes.data);
+          setFeatured(Array.isArray(featRes.data) ? featRes.data : []);
+          setCategories(Array.isArray(catRes.data) ? catRes.data : []);
         }
       } catch (e) {
         console.error(e);
@@ -69,7 +71,7 @@ export default function Home() {
         <div className="container">
           <h2 className="section-title">Browse by category</h2>
           <div className="categories-grid">
-            {categories.slice(0, 4).map((c) => (
+            {safeCategories.slice(0, 4).map((c) => (
               <Link
                 key={c._id}
                 to={`/shop?category=${c._id}`}
@@ -99,7 +101,7 @@ export default function Home() {
             </div>
           ) : (
             <div className="grid-products">
-              {featured.map((p) => (
+              {safeFeatured.map((p) => (
                 <ProductCard key={p._id} product={p} />
               ))}
             </div>
