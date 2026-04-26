@@ -44,6 +44,14 @@ app.use(morgan('dev'));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
 
+app.get('/', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'BB Enterprise API',
+    message: 'API is running. Use /api/health for health checks.',
+  });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ ok: true, service: 'BB Enterprise API' });
 });
