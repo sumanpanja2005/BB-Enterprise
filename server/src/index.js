@@ -34,6 +34,7 @@ const corsOrigins = [
     .map((v) => v.trim())
     .filter(Boolean),
 ].filter(Boolean);
+const allowRenderSubdomains = true;
 
 // Stripe webhook must use raw body (before express.json)
 app.post(
@@ -49,6 +50,12 @@ app.use(
       // Allow non-browser clients (curl, health checks) with no Origin header.
       if (!origin) return callback(null, true);
       if (corsOrigins.includes(origin)) return callback(null, true);
+      if (
+        allowRenderSubdomains &&
+        /^https:\/\/[a-z0-9-]+\.onrender\.com$/i.test(origin)
+      ) {
+        return callback(null, true);
+      }
       return callback(new Error(`CORS blocked for origin: ${origin}`));
     },
     credentials: true,
