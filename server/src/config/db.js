@@ -6,8 +6,7 @@ const mongoose = require('mongoose');
 async function connectDB() {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
-    console.error('MONGODB_URI is not set');
-    return;
+    throw new Error('MONGODB_URI is not set');
   }
 
   const maxRetries = 5;
@@ -26,8 +25,7 @@ async function connectDB() {
       );
 
       if (isLastAttempt) {
-        console.error('Continuing without DB connection; waiting for next restart.');
-        return;
+        throw new Error(`MongoDB unavailable after retries: ${err.message}`);
       }
 
       await new Promise((resolve) => setTimeout(resolve, retryDelayMs));

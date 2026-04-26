@@ -1,7 +1,7 @@
 /**
  * BB Enterprise — Express API entry point
  */
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -21,8 +21,6 @@ const adminRoutes = require('./routes/adminRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-
-connectDB();
 
 const app = express();
 
@@ -70,6 +68,17 @@ app.use(notFound);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+
+async function startServer() {
+  try {
+    await connectDB();
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  } catch (err) {
+    console.error('Startup failed:', err.message);
+    process.exit(1);
+  }
+}
+
+startServer();
