@@ -29,14 +29,11 @@ export default function Footer() {
           <h4 className="footer-heading">Visit Us</h4>
           <ul className="footer-list">
             <li>
-              <span>City Center Store</span>
+              <span>Bhabanipur</span>
+              <br />
+              <span>(Near Girls School)</span>
             </li>
-            <li>
-              <span>Sunlight Mall Store</span>
-            </li>
-            <li>
-              <span>Blossom Street Store</span>
-            </li>
+            
           </ul>
         </div>
       </div>
