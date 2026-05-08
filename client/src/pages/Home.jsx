@@ -120,19 +120,9 @@ export default function Home() {
           </p>
           <div className="locations-grid">
             <article className="location-card card">
-              <h3>BB Downtown Beauty Lounge</h3>
-              <p>21 Rose Avenue, Central Market, City Center</p>
+              <h3>Baba Biswanath Enterprise</h3>
+              <p>Bhabanipur , UdaynarayanPur,Howrah <p>Ph - 9733552211</p></p>
               <span>Open: 10:00 AM - 8:00 PM</span>
-            </article>
-            <article className="location-card card">
-              <h3>BB Glow Mall Studio</h3>
-              <p>2nd Floor, Sunlight Mall, River Road</p>
-              <span>Open: 9:30 AM - 9:00 PM</span>
-            </article>
-            <article className="location-card card">
-              <h3>BB Skin & Color Hub</h3>
-              <p>88 Blossom Street, Near Metro Station</p>
-              <span>Open: 11:00 AM - 7:30 PM</span>
             </article>
           </div>
         </div>
