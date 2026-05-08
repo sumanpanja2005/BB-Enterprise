@@ -31,8 +31,11 @@ export function AuthProvider({ children }) {
     try {
       const { data } = await api.get('/api/users/profile');
       setUser(data);
-    } catch {
-      logout();
+    } catch (err) {
+      const status = err?.response?.status;
+      if (status === 401 || status === 403) {
+        logout();
+      }
     } finally {
       setLoading(false);
     }
