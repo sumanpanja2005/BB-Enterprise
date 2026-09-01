@@ -98,13 +98,18 @@ Set `EMAIL_USER` and `EMAIL_PASS` (e.g. Gmail app password) for password reset a
     └── API.md       # REST API reference
 ```
 
-## Production build
+## Production & Deployment
+
+- **Render Hosting Guide**: See [RENDER_HOSTING.md](file:///d:/FOOTBALL%20TOURNAMENT/BB-Enterprise/RENDER_HOSTING.md) for full instructions on deploying the frontend (Static Site) and backend (Web Service) to Render with MongoDB Atlas, Stripe, and Cloudinary.
+- **Render Blueprint**: You can also use [render.yaml](file:///d:/FOOTBALL%20TOURNAMENT/BB-Enterprise/render.yaml) for 1-click Infrastructure as Code deployment.
+
+### Production build locally:
 
 ```bash
 cd client && npm run build
 ```
 
-Serve `client/dist` with any static host and set `CLIENT_URL` and `VITE_API_URL` (or put the API behind the same origin).
+Serve `client/dist` with any static host and set `FRONTEND_URL` and `VITE_API_URL`.
 
 ## License
 
